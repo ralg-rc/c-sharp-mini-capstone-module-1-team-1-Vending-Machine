@@ -13,18 +13,7 @@ namespace Capstone
         {
             VendingMachine VM = new VendingMachine();
             VM.PopulateItemCollection();
-
-            //foreach (Item item in VM.ItemCollection)
-            //{
-            //    Console.WriteLine($"{item.SlotID}, {item.Name}, ${item.Price}, ({item.Remaining})");
-            //}
-
-
-            VM.AcceptCash();
-            VM.SpendCash();
-
-            Console.WriteLine();
-             Menu.MainMenu();
+            Menu.MainMenu();
             
             
             

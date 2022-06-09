@@ -8,12 +8,29 @@ namespace Capstone.Classes
 {
     public class VendingMachine
     {
-        public List<Item> ItemCollection = new List<Item>();
+        //PROPERTIES
+        public static List<Item> ItemCollection = new List<Item>();
+        public static decimal CurrentCash { get; private set; }
 
-        public VendingMachine() { }
+       
+        //CONSTRUCTORS
+        public VendingMachine() 
+        {
+            try
+            {
+                using (StreamWriter mainSW = new StreamWriter(File.Create(@"C:\Users\Student\AppData\Local\Temp\SalesLog.txt")));
+            }
+            catch (IOException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            catch
+            {
 
-        public decimal CurrentCash { get; private set; }
+            }
+        }
 
+        //METHODS
         public void PopulateItemCollection()
         {
             try
@@ -53,7 +70,7 @@ namespace Capstone.Classes
             }
 
         } //done
-        public void AcceptCash()
+        public static void AcceptCash()
         {
             decimal userCash = 0;
             try
@@ -79,7 +96,7 @@ namespace Capstone.Classes
             #region Log
             try
             {
-                using (StreamWriter sw = new StreamWriter(@"C:\Users\Student\AppData\Local\Temp\SalesLog.txt"))
+                using (StreamWriter sw = new StreamWriter(@"C:\Users\Student\AppData\Local\Temp\SalesLog.txt",true))
 
                 {
                     sw.WriteLine($"{DateTime.Now} FEED MONEY: {userCash} {CurrentCash}");
@@ -95,14 +112,14 @@ namespace Capstone.Classes
             }
             #endregion
         } //done
-        public void DispenseChange()
+        public static void DispenseChange()
         {
             // add change calculator
             Console.WriteLine($"Your change is {CurrentCash}"); // result of change calculator
             CurrentCash = 0.00M;
             // user log here 
         }
-        public void SpendCash()
+        public static void SpendCash()
         {
             Console.WriteLine("ask for ID");
             string answer = Console.ReadLine().ToUpper();
@@ -134,7 +151,7 @@ namespace Capstone.Classes
                         #region Log
                         try
                         {
-                            using (StreamWriter sw = new StreamWriter(@"C:\Users\Student\AppData\Local\Temp\SalesLog.txt"))
+                            using (StreamWriter sw = new StreamWriter(@"C:\Users\Student\AppData\Local\Temp\SalesLog.txt",true))
 
                             {
                                 sw.WriteLine($"{DateTime.Now} {ItemCollection[searchedItemIndex].Name} {ItemCollection[searchedItemIndex].SlotID} {ItemCollection[searchedItemIndex].Price} {CurrentCash}");
@@ -154,22 +171,21 @@ namespace Capstone.Classes
                     else
                     {
                         Console.WriteLine("not enough $");
-                        //return to menu
+                        Menu.PurchaseMenu();
                     }
                 }
                 else
                 {
                     Console.WriteLine("out of stock");
-                    //return menu
+                    Menu.PurchaseMenu();
                 }
             }
             else
             {
                 Console.WriteLine("Doesn't exist");
-                //return menu
+                Menu.PurchaseMenu();
             }
-        }
-
+        } //done
     }
 
 }
