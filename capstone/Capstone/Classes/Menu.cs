@@ -58,7 +58,6 @@ namespace Capstone.Classes
         } 
         public static void PurchaseMenu()
         {
-            // Select menu option
             Console.WriteLine("");
             Console.WriteLine($"current money {VendingMachine.CurrentCash}\n");
             Console.WriteLine("(1) Feed Money");
@@ -66,7 +65,7 @@ namespace Capstone.Classes
             Console.WriteLine("(3) Finish Transaction");
             Console.WriteLine("Make your menu selection:");
             int purchaseOption = 0;
-            //catch for invalid numbrs
+            //catch for invalid numbrs (-1)
             try
             {
                 purchaseOption = int.Parse(Console.ReadLine());
@@ -94,16 +93,14 @@ namespace Capstone.Classes
             }
             else if (purchaseOption == 3)
             {
-                //change
+                VendingMachine.DispenseChange();
                 MainMenu();
             }
             else
             {
                 Console.WriteLine("real plz");
                 PurchaseMenu();
-
             }
-
         }
     }
 }

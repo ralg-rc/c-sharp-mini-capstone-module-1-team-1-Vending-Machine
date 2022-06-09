@@ -8,6 +8,9 @@ namespace Capstone.Classes
 {
     public class VendingMachine
     {
+        //add consosle.clear
+        //make pretty
+
         //PROPERTIES
         public static List<Item> ItemCollection = new List<Item>();
         public static decimal CurrentCash { get; private set; }
@@ -76,7 +79,7 @@ namespace Capstone.Classes
             try
             {
                 Console.WriteLine("Please deposit cash");
-                userCash = decimal.Parse(Console.ReadLine());
+                userCash = int.Parse(Console.ReadLine());
                 CurrentCash += userCash;
                 Console.WriteLine("Thank you");
             }
@@ -86,13 +89,16 @@ namespace Capstone.Classes
                 Console.WriteLine(ex.Message);
                 AcceptCash();
             }
-            catch (Exception ex)//add wrong type exeption
+            catch(FormatException ex)
+            {
+                Console.WriteLine("need whole nums");
+                AcceptCash();
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 AcceptCash();
-            }
-
-            // user log here 
+            } 
             #region Log
             try
             {
@@ -114,11 +120,41 @@ namespace Capstone.Classes
         } //done
         public static void DispenseChange()
         {
-            // add change calculator
-            Console.WriteLine($"Your change is {CurrentCash}"); // result of change calculator
-            CurrentCash = 0.00M;
-            // user log here 
-        }
+            Console.WriteLine($"Your change is ${CurrentCash}");
+
+            decimal changeCash = CurrentCash ;
+            int amountOfQuarters;
+            int amountOfDimes;
+            int amountOfNickels;     
+
+            amountOfQuarters = (int)Math.Floor(changeCash / .25M); //
+            changeCash -= amountOfQuarters * .25M;
+            amountOfDimes = (int)Math.Floor(changeCash / .10M);
+            changeCash -= amountOfDimes * .10M;
+            amountOfNickels = (int)Math.Floor(changeCash / .05M);
+            changeCash -= amountOfNickels * .05M;
+
+            Console.WriteLine($"Your Quarters:{amountOfQuarters}\nYour Dimes:{amountOfDimes}\nYour Nickles:{amountOfNickels}");
+            CurrentCash = 0;
+            #region Log
+            try
+            {
+                using (StreamWriter sw = new StreamWriter(@"C:\Users\Student\AppData\Local\Temp\SalesLog.txt", true))
+
+                {
+                    sw.WriteLine($"{DateTime.Now} GIVE CHANGE: ${changeCash} ${CurrentCash}");
+                }
+            }
+            catch (IOException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            #endregion 
+        } //done
         public static void SpendCash()
         {
             Console.WriteLine("ask for ID");
@@ -139,7 +175,7 @@ namespace Capstone.Classes
 
             }
 
-            if (doesConstain) //make invalid slot excpetion
+            if (doesConstain) //make custom invalid slot excpetion
             {
                 if (!ItemCollection[searchedItemIndex].isOutofStock)
                 {

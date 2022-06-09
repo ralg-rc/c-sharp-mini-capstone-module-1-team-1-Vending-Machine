@@ -14,10 +14,6 @@ namespace Capstone
             VendingMachine VM = new VendingMachine();
             VM.PopulateItemCollection();
             Menu.MainMenu();
-            
-            
-            
-          
         }
     }
 }
