@@ -10,7 +10,21 @@ namespace Capstone.Classes
         public string SlotID { get; set; }
         public decimal Price { get; set; }
         public string Sound { get; set; }
-        public bool isOutofStock { get; set; }
+        public int Remaining { get; set; } = 5;
+        public bool isOutofStock
+        {
+            get
+            {
+                if (Remaining == 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
 
         public Item(string slotID, string name, decimal price)
         {

@@ -2,20 +2,23 @@
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using System.Globalization;
 
 namespace Capstone.Classes
 {
-    public static class VendingMachine 
+    public class VendingMachine
     {
-        public static List<Item> ItemCollection = new List<Item>();
-        public static decimal CurrentCash { get; private set; }
+        public List<Item> ItemCollection = new List<Item>();
 
+        public VendingMachine() { }
 
-        public static void PopulateItemCollection()
+        public decimal CurrentCash { get; private set; }
+
+        public void PopulateItemCollection()
         {
             try
             {
-                using (StreamReader sr = new StreamReader(@"C:\Users\Student\git\c-sharp-mini-capstone-module-1-team-1\capstone"))
+                using (StreamReader sr = new StreamReader(@"C:\Users\Student\git\c-sharp-mini-capstone-module-1-team-1\capstone\vendingmachine.csv"))
                 {
                     while (!sr.EndOfStream)
                     {
@@ -37,42 +40,137 @@ namespace Capstone.Classes
                         {
                             ItemCollection.Add(new Gum(propertyArray[0], propertyArray[1], decimal.Parse(propertyArray[2])));
                         }
-
                     }
                 }
             }
-            catch
+            catch (IOException e)
             {
-
+                Console.WriteLine(e.Message);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
             }
 
-        }
-        public static void AcceptCash()
+        } //done
+        public void AcceptCash()
         {
+            decimal userCash = 0;
             try
             {
                 Console.WriteLine("Please deposit cash");
-                decimal userCash = decimal.Parse(Console.ReadLine());
-                CurrentCash = CurrentCash + userCash;
+                userCash = decimal.Parse(Console.ReadLine());
+                CurrentCash += userCash;
+                Console.WriteLine("Thank you");
             }
-            catch(Exception ex)
+            catch (ArgumentException ex)
             {
                 Console.WriteLine("Please enter a valid number");
+                Console.WriteLine(ex.Message);
+                AcceptCash();
             }
-            // user log here 
+            catch (Exception ex)//add wrong type exeption
+            {
+                Console.WriteLine(ex.Message);
+                AcceptCash();
+            }
 
-        }
-        public static void DispenseChange()
+            // user log here 
+            #region Log
+            try
+            {
+                using (StreamWriter sw = new StreamWriter(@"C:\Users\Student\AppData\Local\Temp\SalesLog.txt"))
+
+                {
+                    sw.WriteLine($"{DateTime.Now} FEED MONEY: {userCash} {CurrentCash}");
+                }
+            }
+            catch (IOException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            #endregion
+        } //done
+        public void DispenseChange()
         {
             // add change calculator
             Console.WriteLine($"Your change is {CurrentCash}"); // result of change calculator
             CurrentCash = 0.00M;
             // user log here 
         }
-        public static void SpendCash(Item item)
+        public void SpendCash()
         {
-            CurrentCash = CurrentCash - item.Price;
+            Console.WriteLine("ask for ID");
+            string answer = Console.ReadLine().ToUpper();
+            bool doesConstain = false;
+            int searchedItemIndex = 0;
+            foreach (Item item in ItemCollection)
+            {
+                if (item.SlotID == answer)
+                {
+                    doesConstain = true;
+                }
+                if (doesConstain)
+                {
+                    searchedItemIndex = ItemCollection.IndexOf(item);
+                    break;
+                }
+
+            }
+
+            if (doesConstain) //make invalid slot excpetion
+            {
+                if (!ItemCollection[searchedItemIndex].isOutofStock)
+                {
+                    if (CurrentCash - ItemCollection[searchedItemIndex].Price >= 0)
+                    {
+                        CurrentCash = CurrentCash - ItemCollection[searchedItemIndex].Price;
+                        Console.WriteLine($"here's your {ItemCollection[searchedItemIndex].Name}! {ItemCollection[searchedItemIndex].Sound} ");
+                        ItemCollection[searchedItemIndex].Remaining--;
+                        #region Log
+                        try
+                        {
+                            using (StreamWriter sw = new StreamWriter(@"C:\Users\Student\AppData\Local\Temp\SalesLog.txt"))
+
+                            {
+                                sw.WriteLine($"{DateTime.Now} {ItemCollection[searchedItemIndex].Name} {ItemCollection[searchedItemIndex].SlotID} {ItemCollection[searchedItemIndex].Price} {CurrentCash}");
+                            }
+                        }
+                        catch (IOException e)
+                        {
+                            Console.WriteLine(e.Message);
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e.Message);
+                        }
+                        #endregion
+
+                    }
+                    else
+                    {
+                        Console.WriteLine("not enough $");
+                        //return to menu
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("out of stock");
+                    //return menu
+                }
+            }
+            else
+            {
+                Console.WriteLine("Doesn't exist");
+                //return menu
+            }
         }
-        
+
     }
+
 }
+
