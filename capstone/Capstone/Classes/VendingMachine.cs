@@ -14,6 +14,7 @@ namespace Capstone.Classes
         public static List<Item> ItemCollection = new List<Item>();
         public static decimal CurrentCash { get; set; }
         public static string Blank = "----------------------------------------------------------------";
+        public static bool IsTesting = false;
         //CONSTRUCTORS
         public VendingMachine() 
         {
@@ -87,25 +88,38 @@ namespace Capstone.Classes
                 {
                     Console.WriteLine(Blank);
                     Console.WriteLine("Please enter a valid number");
-                    Menu.PurchaseMenu();
+                    if (!IsTesting)
+                    {
+                        Menu.PurchaseMenu();
+                    }
                 }
             }
             catch (ArgumentException ex)
             {
                 Console.WriteLine(Blank);
                 Console.WriteLine("Please enter a valid number");
-                Menu.PurchaseMenu();
+                if (!IsTesting)
+                {
+                    Menu.PurchaseMenu();
+                }
             }
             catch(FormatException ex)
             {
                 Console.WriteLine(Blank);
                 Console.WriteLine("Whole bills only please");
-                Menu.PurchaseMenu();
+                if (!IsTesting)
+                {
+                    Menu.PurchaseMenu();
+                }
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                Menu.PurchaseMenu();
+
+                if (!IsTesting)
+                {
+                    Menu.PurchaseMenu();
+                }
             } 
 
             #region Log
@@ -186,21 +200,30 @@ namespace Capstone.Classes
                     {
                         Console.WriteLine(Blank);
                         Console.WriteLine("Insufficient funds");
-                        Menu.PurchaseMenu();
+                        if (!IsTesting)
+                        {
+                            Menu.PurchaseMenu();
+                        }
                     }
                 }
                 else
                 {
                     Console.WriteLine(Blank);
                     Console.WriteLine("This item is out of stock");
-                    Menu.PurchaseMenu();
+                    if (!IsTesting)
+                    {
+                        Menu.PurchaseMenu();
+                    }
                 }
             }
             else
             {
                 Console.WriteLine(Blank);
                 Console.WriteLine("Please enter a valid slot ID");
-                Menu.PurchaseMenu();
+                if (!IsTesting)
+                {
+                    Menu.PurchaseMenu();
+                }
             }
         } //done
         public static void DispenseChange()

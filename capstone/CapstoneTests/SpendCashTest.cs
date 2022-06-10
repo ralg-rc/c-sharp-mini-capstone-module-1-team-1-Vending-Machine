@@ -29,20 +29,19 @@ namespace CapstoneTests
 
         //This test calls a Menu method. This then requires a user input, thus, it will not compile the test.
 
-        //[TestMethod]
-        //public void SpendCashTest_InvalidSlot()
-        //{
-        //    VMTest.PopulateItemCollection();
-        //    //ARRANGE
+        [TestMethod]
+        public void SpendCashTest_InvalidSlot()
+        {
+            VendingMachine.IsTesting = true;
+            //ARRANGE
+            VendingMachine.CurrentCash = 100;
+            string testAnswer = "A100";
 
-        //    VendingMachine.CurrentCash = 100;
-        //    string testAnswer = "A100";
-
-        //    //ACT
-        //    VendingMachine.SpendCash(testAnswer);
-        //    //ASSERT
-        //    Assert.AreEqual(5, VendingMachine.ItemCollection[1].Remaining);
-        //    Assert.AreEqual(100, VendingMachine.CurrentCash);
-        //}
+            //ACT
+            VendingMachine.SpendCash(testAnswer);
+            //ASSERT
+            Assert.AreEqual(5, VendingMachine.ItemCollection[1].Remaining);
+            Assert.AreEqual(100, VendingMachine.CurrentCash);
+        }
     }
 }

@@ -11,7 +11,9 @@ namespace CapstoneTests
     {
         [TestMethod]
         public void Accepts_Positive_Amount()
+           
         {
+            VendingMachine.IsTesting = true;
             //ARRANGE
             VendingMachine.CurrentCash = 100;
             decimal deposit = 1M;
@@ -23,19 +25,18 @@ namespace CapstoneTests
         }
 
         //This test calls a Menu method. This then requires a user input, thus, it will not compile the test.
-        //[TestMethod]
-        //public void Negative_Amount_Does_Not_Change_CurrentCash()
-        //{
-        //    VendingMachine VM = new VendingMachine();
-        //    VM.PopulateItemCollection();
-        //    //ARRANGE
-        //    VendingMachine.CurrentCash = 100;
-        //    decimal deposit = -1M;
-        //    //ACT
-        //    VendingMachine.AcceptCash(deposit);
-        //    decimal actual = VendingMachine.CurrentCash;
-        //    //ASSERT
-        //    Assert.AreEqual(100, actual);
-        //}
+        [TestMethod]
+        public void Negative_Amount_Does_Not_Change_CurrentCash()
+        {
+            VendingMachine.IsTesting = true;
+            //ARRANGE
+            VendingMachine.CurrentCash = 100;
+            decimal deposit = -1M;
+            //ACT
+            VendingMachine.AcceptCash(deposit);
+            decimal actual = VendingMachine.CurrentCash;
+            //ASSERT
+            Assert.AreEqual(100, actual);
+        }
     }
 }
