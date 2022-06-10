@@ -10,11 +10,11 @@ namespace Capstone.Classes
        
         public static void MainMenu()
         {
-            #region Select menu option
+            #region Input menu option
             Console.WriteLine("(1) Display Vending Machine Items");
             Console.WriteLine("(2) Purchase");
             Console.WriteLine("(3) Exit");
-            Console.WriteLine("Make your menu selection:");
+            Console.WriteLine("Please choose one of the above options:");
             int menuOption = 0;
             try
             {
@@ -30,56 +30,76 @@ namespace Capstone.Classes
             {
 
             }
+            Console.Clear();
             #endregion
+
+            #region Navigate Menu
 
             if (menuOption == 1)
             {
+
                 foreach (Item item in VendingMachine.ItemCollection)
                 {
-                    Console.WriteLine($"{item.SlotID}, {item.Name}, ${item.Price}, ({item.Remaining})");
+                    if (item.Remaining == 0)
+                    {
+                        Console.WriteLine($"Slot ID: ({item.SlotID}) {item.Name} - ${item.Price}, Remaining: Sold Out");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Slot ID: ({item.SlotID}) {item.Name} - ${item.Price}, Remaining: ({item.Remaining})");
+                    }
 
                 }
+                Console.WriteLine();
                 MainMenu();
             }
             else if (menuOption == 2)
             {
+                Console.Clear();
                 PurchaseMenu();
             }
             else if (menuOption == 3)
             {
-                Console.WriteLine("bye");
+                Console.Clear();
+                Console.WriteLine("See you later, Space Cowboy...");
+                Console.ReadLine();
             }
             else
             {
-                Console.WriteLine("real plz");
+                Console.Clear();
+                Console.WriteLine("Invalid Selection\n");
                 MainMenu();
 
             }
-        } 
+            #endregion
+        }
+
         public static void PurchaseMenu()
         {
-            Console.WriteLine("");
-            Console.WriteLine($"current money {VendingMachine.CurrentCash}\n");
+            #region Input menu option
+            Console.WriteLine($"Your balance: ${VendingMachine.CurrentCash}\n");
             Console.WriteLine("(1) Feed Money");
             Console.WriteLine("(2) Select Product");
             Console.WriteLine("(3) Finish Transaction");
-            Console.WriteLine("Make your menu selection:");
+            Console.WriteLine("Please choose one of the above options:");
             int purchaseOption = 0;
-            //catch for invalid numbrs (-1)
             try
             {
                 purchaseOption = int.Parse(Console.ReadLine());
             }
             catch  (FormatException)
             {
-                Console.WriteLine("invalid menu \n");
+                Console.Clear();
+                Console.WriteLine("Invalid Selection\n");
                 PurchaseMenu();
             }
-            catch
+            catch (Exception ex)
             {
-
+                Console.WriteLine(ex.Message); 
             }
+            #endregion
 
+            #region Navigate Menu
             if (purchaseOption == 1)
             {
                 VendingMachine.AcceptCash();
@@ -87,6 +107,20 @@ namespace Capstone.Classes
             }
             else if (purchaseOption == 2)
             {
+                Console.Clear();
+                foreach (Item item in VendingMachine.ItemCollection)
+                {
+                    if (item.Remaining == 0)
+                    {
+                        Console.WriteLine($"Slot ID: ({item.SlotID}) {item.Name} - ${item.Price}, Remaining: Sold Out");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Slot ID: ({item.SlotID}) {item.Name} - ${item.Price}, Remaining: ({item.Remaining})");
+                    }
+                }
+                Console.WriteLine();
+                Console.WriteLine($"Your balance: ${VendingMachine.CurrentCash}");
                 VendingMachine.SpendCash();
                 PurchaseMenu();
 
@@ -98,9 +132,10 @@ namespace Capstone.Classes
             }
             else
             {
-                Console.WriteLine("real plz");
+                Console.WriteLine("Invalid Selection\n");
                 PurchaseMenu();
             }
+            #endregion
         }
     }
 }

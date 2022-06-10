@@ -8,7 +8,6 @@ namespace Capstone.Classes
 {
     public class VendingMachine
     {
-        //add consosle.clear
         //make pretty
 
         //PROPERTIES
@@ -76,22 +75,36 @@ namespace Capstone.Classes
         public static void AcceptCash()
         {
             decimal userCash = 0;
+            Console.Clear();
+            Console.WriteLine($"Your balance: ${CurrentCash}\n");
             try
             {
                 Console.WriteLine("Please deposit cash");
                 userCash = int.Parse(Console.ReadLine());
-                CurrentCash += userCash;
-                Console.WriteLine("Thank you");
+                if (userCash > 0)
+                {
+                    CurrentCash += userCash;
+                    Console.Clear();
+                    Console.WriteLine("Thank you");
+
+                }
+                else
+                {
+                    Console.Clear();
+                    Console.WriteLine("Please enter a valid number");
+                    AcceptCash();
+                }
             }
             catch (ArgumentException ex)
             {
+                Console.Clear();
                 Console.WriteLine("Please enter a valid number");
-                Console.WriteLine(ex.Message);
                 AcceptCash();
             }
             catch(FormatException ex)
             {
-                Console.WriteLine("need whole nums");
+                Console.Clear();
+                Console.WriteLine("Whole bills only please");
                 AcceptCash();
             }
             catch (Exception ex)
@@ -99,6 +112,7 @@ namespace Capstone.Classes
                 Console.WriteLine(ex.Message);
                 AcceptCash();
             } 
+
             #region Log
             try
             {
@@ -120,29 +134,33 @@ namespace Capstone.Classes
         } //done
         public static void DispenseChange()
         {
-            Console.WriteLine($"Your change is ${CurrentCash}");
+            #region Main
+
 
             decimal changeCash = CurrentCash ;
             int amountOfQuarters;
             int amountOfDimes;
             int amountOfNickels;     
 
-            amountOfQuarters = (int)Math.Floor(changeCash / .25M); //
+            amountOfQuarters = (int)Math.Floor(changeCash / .25M);
             changeCash -= amountOfQuarters * .25M;
             amountOfDimes = (int)Math.Floor(changeCash / .10M);
             changeCash -= amountOfDimes * .10M;
             amountOfNickels = (int)Math.Floor(changeCash / .05M);
             changeCash -= amountOfNickels * .05M;
 
-            Console.WriteLine($"Your Quarters:{amountOfQuarters}\nYour Dimes:{amountOfDimes}\nYour Nickles:{amountOfNickels}");
-            CurrentCash = 0;
+            Console.Clear();
+            Console.WriteLine($"Your change is ${CurrentCash}");
+            Console.WriteLine($"Your Quarters:{amountOfQuarters}\nYour Dimes:{amountOfDimes}\nYour Nickles:{amountOfNickels}\n");
+            #endregion
+
             #region Log
             try
             {
                 using (StreamWriter sw = new StreamWriter(@"C:\Users\Student\AppData\Local\Temp\SalesLog.txt", true))
 
                 {
-                    sw.WriteLine($"{DateTime.Now} GIVE CHANGE: ${changeCash} ${CurrentCash}");
+                    sw.WriteLine($"{DateTime.Now} GIVE CHANGE: ${CurrentCash} ${changeCash}");
                 }
             }
             catch (IOException e)
@@ -153,11 +171,16 @@ namespace Capstone.Classes
             {
                 Console.WriteLine(e.Message);
             }
-            #endregion 
+            #endregion
+
+            CurrentCash = 0;
         } //done
         public static void SpendCash()
         {
-            Console.WriteLine("ask for ID");
+
+            Console.WriteLine("Please enter a slot ID");
+
+            #region Determine slot existance
             string answer = Console.ReadLine().ToUpper();
             bool doesConstain = false;
             int searchedItemIndex = 0;
@@ -174,17 +197,23 @@ namespace Capstone.Classes
                 }
 
             }
+            #endregion
 
-            if (doesConstain) //make custom invalid slot excpetion
+
+            if (doesConstain)
             {
                 if (!ItemCollection[searchedItemIndex].isOutofStock)
                 {
                     if (CurrentCash - ItemCollection[searchedItemIndex].Price >= 0)
                     {
                         CurrentCash = CurrentCash - ItemCollection[searchedItemIndex].Price;
-                        Console.WriteLine($"here's your {ItemCollection[searchedItemIndex].Name}! {ItemCollection[searchedItemIndex].Sound} ");
+                        Console.Clear();
+                        Console.WriteLine($"Here's your {ItemCollection[searchedItemIndex].Name}! {ItemCollection[searchedItemIndex].Sound} ");
+
                         ItemCollection[searchedItemIndex].Remaining--;
-                        #region Log
+
+
+                    #region Log
                         try
                         {
                             using (StreamWriter sw = new StreamWriter(@"C:\Users\Student\AppData\Local\Temp\SalesLog.txt",true))
@@ -206,23 +235,25 @@ namespace Capstone.Classes
                     }
                     else
                     {
-                        Console.WriteLine("not enough $");
+                        Console.Clear();
+                        Console.WriteLine("Insufficient funds");
                         Menu.PurchaseMenu();
                     }
                 }
                 else
                 {
-                    Console.WriteLine("out of stock");
+                    Console.Clear();
+                    Console.WriteLine("This item is out of stock");
                     Menu.PurchaseMenu();
                 }
             }
             else
             {
-                Console.WriteLine("Doesn't exist");
+                Console.Clear();
+                Console.WriteLine("Please enter a valid slot ID");
                 Menu.PurchaseMenu();
             }
         } //done
     }
-
 }
 
