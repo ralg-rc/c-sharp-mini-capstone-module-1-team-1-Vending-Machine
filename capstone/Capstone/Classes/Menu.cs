@@ -73,7 +73,6 @@ namespace Capstone.Classes
             }
             #endregion
         }
-
         public static void PurchaseMenu()
         {
             #region Input menu option
@@ -103,12 +102,18 @@ namespace Capstone.Classes
             if (purchaseOption == 1)
             {
                 Console.Clear();
-                VendingMachine.AcceptCash();
+                decimal userCash = 0;
+                Console.WriteLine("Please deposit cash");
+                userCash = int.Parse(Console.ReadLine());
+                VendingMachine.AcceptCash(userCash);
                 PurchaseMenu();
             }
             else if (purchaseOption == 2)
             {
                 Console.Clear();
+
+                Console.WriteLine("Please enter a slot ID");
+                string answer = Console.ReadLine().ToUpper();
                 foreach (Item item in VendingMachine.ItemCollection)
                 {
                     if (item.Remaining == 0)
@@ -122,7 +127,7 @@ namespace Capstone.Classes
                 }
                 Console.WriteLine();
                 Console.WriteLine($"Your balance: ${VendingMachine.CurrentCash}");
-                VendingMachine.SpendCash();
+                VendingMachine.SpendCash(answer);
                 PurchaseMenu();
 
             }

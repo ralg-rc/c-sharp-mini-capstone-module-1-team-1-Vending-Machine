@@ -14,7 +14,6 @@ namespace Capstone.Classes
         public static List<Item> ItemCollection = new List<Item>();
         public static decimal CurrentCash { get; private set; }
 
-       
         //CONSTRUCTORS
         public VendingMachine() 
         {
@@ -72,15 +71,12 @@ namespace Capstone.Classes
             }
 
         } //done
-        public static void AcceptCash()
+        public static void AcceptCash(decimal userCash)
         {
-            decimal userCash = 0;
-            //Console.Clear();
             Console.WriteLine($"Your balance: ${CurrentCash}\n");
             try
             {
-                Console.WriteLine("Please deposit cash");
-                userCash = int.Parse(Console.ReadLine());
+
                 if (userCash > 0)
                 {
                     CurrentCash += userCash;
@@ -132,56 +128,10 @@ namespace Capstone.Classes
             }
             #endregion
         } //done
-        public static void DispenseChange()
+        public static void SpendCash(string answer)
         {
-            #region Main
-
-
-            decimal changeCash = CurrentCash ;
-            int amountOfQuarters;
-            int amountOfDimes;
-            int amountOfNickels;     
-
-            amountOfQuarters = (int)Math.Floor(changeCash / .25M);
-            changeCash -= amountOfQuarters * .25M;
-            amountOfDimes = (int)Math.Floor(changeCash / .10M);
-            changeCash -= amountOfDimes * .10M;
-            amountOfNickels = (int)Math.Floor(changeCash / .05M);
-            changeCash -= amountOfNickels * .05M;
-
-            Console.Clear();
-            Console.WriteLine($"Your change is ${CurrentCash}");
-            Console.WriteLine($"Your Quarters:{amountOfQuarters}\nYour Dimes:{amountOfDimes}\nYour Nickles:{amountOfNickels}\n");
-            #endregion
-
-            #region Log
-            try
-            {
-                using (StreamWriter sw = new StreamWriter(@"C:\Users\Student\AppData\Local\Temp\SalesLog.txt", true))
-
-                {
-                    sw.WriteLine($"{DateTime.Now} GIVE CHANGE: ${CurrentCash} ${changeCash}");
-                }
-            }
-            catch (IOException e)
-            {
-                Console.WriteLine(e.Message);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-            #endregion
-
-            CurrentCash = 0;
-        } //done
-        public static void SpendCash()
-        {
-
-            Console.WriteLine("Please enter a slot ID");
-
             #region Determine slot existance
-            string answer = Console.ReadLine().ToUpper();
+
             bool doesConstain = false;
             int searchedItemIndex = 0;
             foreach (Item item in ItemCollection)
@@ -253,6 +203,49 @@ namespace Capstone.Classes
                 Console.WriteLine("Please enter a valid slot ID");
                 Menu.PurchaseMenu();
             }
+        } //done
+        public static void DispenseChange()
+        {
+            #region Main
+
+
+            decimal changeCash = CurrentCash;
+            int amountOfQuarters;
+            int amountOfDimes;
+            int amountOfNickels;
+
+            amountOfQuarters = (int)Math.Floor(changeCash / .25M);
+            changeCash -= amountOfQuarters * .25M;
+            amountOfDimes = (int)Math.Floor(changeCash / .10M);
+            changeCash -= amountOfDimes * .10M;
+            amountOfNickels = (int)Math.Floor(changeCash / .05M);
+            changeCash -= amountOfNickels * .05M;
+
+            Console.Clear();
+            Console.WriteLine($"Your change is ${CurrentCash}");
+            Console.WriteLine($"Your Quarters:{amountOfQuarters}\nYour Dimes:{amountOfDimes}\nYour Nickles:{amountOfNickels}\n");
+            #endregion
+
+            #region Log
+            try
+            {
+                using (StreamWriter sw = new StreamWriter(@"C:\Users\Student\AppData\Local\Temp\SalesLog.txt", true))
+
+                {
+                    sw.WriteLine($"{DateTime.Now} GIVE CHANGE: ${CurrentCash} ${changeCash}");
+                }
+            }
+            catch (IOException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            #endregion
+
+            CurrentCash = 0;
         } //done
     }
 }
