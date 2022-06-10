@@ -30,7 +30,7 @@ namespace Capstone.Classes
             {
 
             }
-            Console.Clear();
+            Console.WriteLine(VendingMachine.Blank);
             #endregion
 
             #region Navigate Menu
@@ -55,18 +55,18 @@ namespace Capstone.Classes
             }
             else if (menuOption == 2)
             {
-                Console.Clear();
+                Console.WriteLine(VendingMachine.Blank);
                 PurchaseMenu();
             }
             else if (menuOption == 3)
             {
-                Console.Clear();
+                Console.WriteLine(VendingMachine.Blank);
                 Console.WriteLine("See you later, Space Cowboy...");
                 Console.ReadLine();
             }
             else
             {
-                Console.Clear();
+                Console.WriteLine(VendingMachine.Blank);
                 Console.WriteLine("Invalid Selection\n");
                 MainMenu();
 
@@ -88,7 +88,7 @@ namespace Capstone.Classes
             }
             catch  (FormatException)
             {
-                Console.Clear();
+                Console.WriteLine(VendingMachine.Blank);
                 Console.WriteLine("Invalid Selection\n");
                 PurchaseMenu();
             }
@@ -101,7 +101,7 @@ namespace Capstone.Classes
             #region Navigate Menu
             if (purchaseOption == 1)
             {
-                Console.Clear();
+                Console.WriteLine(VendingMachine.Blank);
                 decimal userCash = 0;
                 Console.WriteLine("Please deposit cash");
                 userCash = int.Parse(Console.ReadLine());
@@ -110,7 +110,7 @@ namespace Capstone.Classes
             }
             else if (purchaseOption == 2)
             {
-                Console.Clear();
+                Console.WriteLine(VendingMachine.Blank);
 
                 Console.WriteLine("Please enter a slot ID");
                 string answer = Console.ReadLine().ToUpper();
@@ -138,7 +138,7 @@ namespace Capstone.Classes
             }
             else
             {
-                Console.Clear();
+                Console.WriteLine(VendingMachine.Blank);
                 Console.WriteLine("Invalid Selection\n");
                 PurchaseMenu();
             }

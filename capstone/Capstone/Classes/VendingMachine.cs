@@ -12,8 +12,8 @@ namespace Capstone.Classes
 
         //PROPERTIES
         public static List<Item> ItemCollection = new List<Item>();
-        public static decimal CurrentCash { get; private set; }
-
+        public static decimal CurrentCash { get; set; }
+        public static string Blank = "----------------------------------------------------------------";
         //CONSTRUCTORS
         public VendingMachine() 
         {
@@ -80,26 +80,25 @@ namespace Capstone.Classes
                 if (userCash > 0)
                 {
                     CurrentCash += userCash;
-                    Console.Clear();
+                    Console.WriteLine(Blank);
                     Console.WriteLine("Thank you");
-
                 }
                 else if (userCash <= 0)
                 {
-                    Console.Clear();
+                    Console.WriteLine(Blank);
                     Console.WriteLine("Please enter a valid number");
                     Menu.PurchaseMenu();
                 }
             }
             catch (ArgumentException ex)
             {
-                Console.Clear();
+                Console.WriteLine(Blank);
                 Console.WriteLine("Please enter a valid number");
                 Menu.PurchaseMenu();
             }
             catch(FormatException ex)
             {
-                Console.Clear();
+                Console.WriteLine(Blank);
                 Console.WriteLine("Whole bills only please");
                 Menu.PurchaseMenu();
             }
@@ -157,7 +156,7 @@ namespace Capstone.Classes
                     if (CurrentCash - ItemCollection[searchedItemIndex].Price >= 0)
                     {
                         CurrentCash = CurrentCash - ItemCollection[searchedItemIndex].Price;
-                        Console.Clear();
+                        Console.WriteLine(Blank);
                         Console.WriteLine($"Here's your {ItemCollection[searchedItemIndex].Name}! {ItemCollection[searchedItemIndex].Sound} ");
 
                         ItemCollection[searchedItemIndex].Remaining--;
@@ -185,21 +184,21 @@ namespace Capstone.Classes
                     }
                     else
                     {
-                        Console.Clear();
+                        Console.WriteLine(Blank);
                         Console.WriteLine("Insufficient funds");
                         Menu.PurchaseMenu();
                     }
                 }
                 else
                 {
-                    Console.Clear();
+                    Console.WriteLine(Blank);
                     Console.WriteLine("This item is out of stock");
                     Menu.PurchaseMenu();
                 }
             }
             else
             {
-                Console.Clear();
+                Console.WriteLine(Blank);
                 Console.WriteLine("Please enter a valid slot ID");
                 Menu.PurchaseMenu();
             }
@@ -221,7 +220,7 @@ namespace Capstone.Classes
             amountOfNickels = (int)Math.Floor(changeCash / .05M);
             changeCash -= amountOfNickels * .05M;
 
-            Console.Clear();
+            Console.WriteLine(Blank);
             Console.WriteLine($"Your change is ${CurrentCash}");
             Console.WriteLine($"Your Quarters:{amountOfQuarters}\nYour Dimes:{amountOfDimes}\nYour Nickles:{amountOfNickels}\n");
             #endregion

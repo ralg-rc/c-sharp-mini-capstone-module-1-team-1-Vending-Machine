@@ -33,11 +33,31 @@ namespace Capstone.Classes
             Price = price;
             
         }
+
         public Item()
         {
 
         }
 
+        //magic david solution
+        public override bool Equals(object item)
+        {
+            Item comparisonItem = (Item)item;
+            bool isEqual = true;
+            if (this.Name != comparisonItem.Name)
+            {
+                isEqual = false;
+            }
+            if (this.Price != comparisonItem.Price)
+            {
+                isEqual = false;
+            }
+            if (this.SlotID != comparisonItem.SlotID)
+            {
+                isEqual = false;
+            }
+            return isEqual;
+        }
 
     }
 }
