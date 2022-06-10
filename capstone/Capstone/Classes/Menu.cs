@@ -102,6 +102,7 @@ namespace Capstone.Classes
             #region Navigate Menu
             if (purchaseOption == 1)
             {
+                Console.Clear();
                 VendingMachine.AcceptCash();
                 PurchaseMenu();
             }
@@ -132,6 +133,7 @@ namespace Capstone.Classes
             }
             else
             {
+                Console.Clear();
                 Console.WriteLine("Invalid Selection\n");
                 PurchaseMenu();
             }

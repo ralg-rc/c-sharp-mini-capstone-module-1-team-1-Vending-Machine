@@ -75,7 +75,7 @@ namespace Capstone.Classes
         public static void AcceptCash()
         {
             decimal userCash = 0;
-            Console.Clear();
+            //Console.Clear();
             Console.WriteLine($"Your balance: ${CurrentCash}\n");
             try
             {
@@ -88,29 +88,29 @@ namespace Capstone.Classes
                     Console.WriteLine("Thank you");
 
                 }
-                else
+                else if (userCash <= 0)
                 {
                     Console.Clear();
                     Console.WriteLine("Please enter a valid number");
-                    AcceptCash();
+                    Menu.PurchaseMenu();
                 }
             }
             catch (ArgumentException ex)
             {
                 Console.Clear();
                 Console.WriteLine("Please enter a valid number");
-                AcceptCash();
+                Menu.PurchaseMenu();
             }
             catch(FormatException ex)
             {
                 Console.Clear();
                 Console.WriteLine("Whole bills only please");
-                AcceptCash();
+                Menu.PurchaseMenu();
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                AcceptCash();
+                Menu.PurchaseMenu();
             } 
 
             #region Log
