@@ -23,8 +23,6 @@ namespace CapstoneTests
             //ASSERT
             Assert.AreEqual(101, actual);
         }
-
-        //This test calls a Menu method. This then requires a user input, thus, it will not compile the test.
         [TestMethod]
         public void Negative_Amount_Does_Not_Change_CurrentCash()
         {
@@ -32,6 +30,19 @@ namespace CapstoneTests
             //ARRANGE
             VendingMachine.CurrentCash = 100;
             decimal deposit = -1M;
+            //ACT
+            VendingMachine.AcceptCash(deposit);
+            decimal actual = VendingMachine.CurrentCash;
+            //ASSERT
+            Assert.AreEqual(100, actual);
+        }
+        [TestMethod]
+        public void Zero_Amount_Does_Not_Change_CurrentCash()
+        {
+            VendingMachine.IsTesting = true;
+            //ARRANGE
+            VendingMachine.CurrentCash = 100;
+            decimal deposit = 0M;
             //ACT
             VendingMachine.AcceptCash(deposit);
             decimal actual = VendingMachine.CurrentCash;

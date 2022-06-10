@@ -15,7 +15,6 @@ namespace CapstoneTests
         public void DispenseQuarters_MakeQuarters()
         {
             decimal changeCash = 20;
-
             int result = (int)Math.Floor(changeCash / .25M);
             int expected = 80;
             Assert.AreEqual(expected, result);

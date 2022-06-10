@@ -74,10 +74,8 @@ namespace Capstone.Classes
         } //done
         public static void AcceptCash(decimal userCash)
         {
-            Console.WriteLine($"Your balance: ${CurrentCash}\n");
             try
             {
-
                 if (userCash > 0)
                 {
                     CurrentCash += userCash;
@@ -229,7 +227,6 @@ namespace Capstone.Classes
         public static void DispenseChange()
         {
             #region Main
-
 
             decimal changeCash = CurrentCash;
             int amountOfQuarters;

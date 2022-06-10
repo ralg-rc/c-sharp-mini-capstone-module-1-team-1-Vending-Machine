@@ -11,6 +11,7 @@ namespace Capstone.Classes
         public static void MainMenu()
         {
             #region Input menu option
+            
             Console.WriteLine("(1) Display Vending Machine Items");
             Console.WriteLine("(2) Purchase");
             Console.WriteLine("(3) Exit");
@@ -20,24 +21,25 @@ namespace Capstone.Classes
             {
                 menuOption = int.Parse(Console.ReadLine());
             }
-            //catch for invalid numbrs
             catch (FormatException)
             {
-                Console.WriteLine("invalid menu\n");
+                Console.WriteLine(VendingMachine.Blank);
+                Console.WriteLine("Invalid Selection\n");
+
                 MainMenu();
             }
             catch
             {
 
             }
-            Console.WriteLine(VendingMachine.Blank);
+            //Console.WriteLine(VendingMachine.Blank);
             #endregion
 
             #region Navigate Menu
 
             if (menuOption == 1)
             {
-
+                Console.WriteLine(VendingMachine.Blank);
                 foreach (Item item in VendingMachine.ItemCollection)
                 {
                     if (item.Remaining == 0)
@@ -64,12 +66,16 @@ namespace Capstone.Classes
                 Console.WriteLine("See you later, Space Cowboy...");
                 Console.ReadLine();
             }
+            //else if (menuOption == 4)
+            //{
+            //    Console.WriteLine("Ooooh you have found the secret menu" );
+
+            //}
             else
             {
                 Console.WriteLine(VendingMachine.Blank);
                 Console.WriteLine("Invalid Selection\n");
                 MainMenu();
-
             }
             #endregion
         }
@@ -86,7 +92,7 @@ namespace Capstone.Classes
             {
                 purchaseOption = int.Parse(Console.ReadLine());
             }
-            catch  (FormatException)
+            catch (FormatException)
             {
                 Console.WriteLine(VendingMachine.Blank);
                 Console.WriteLine("Invalid Selection\n");
@@ -94,7 +100,7 @@ namespace Capstone.Classes
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message); 
+                Console.WriteLine(ex.Message);
             }
             #endregion
 
@@ -102,9 +108,20 @@ namespace Capstone.Classes
             if (purchaseOption == 1)
             {
                 Console.WriteLine(VendingMachine.Blank);
+                Console.WriteLine($"Your balance: ${VendingMachine.CurrentCash}\n");
                 decimal userCash = 0;
                 Console.WriteLine("Please deposit cash");
-                userCash = int.Parse(Console.ReadLine());
+                Console.Write("$");
+                try
+                {
+                    userCash = int.Parse(Console.ReadLine());
+                }
+                catch (FormatException ex)
+                {
+                    Console.WriteLine(VendingMachine.Blank);
+                    Console.WriteLine("Please enter a valid number");
+                    PurchaseMenu();
+                }
                 VendingMachine.AcceptCash(userCash);
                 PurchaseMenu();
             }
@@ -112,8 +129,7 @@ namespace Capstone.Classes
             {
                 Console.WriteLine(VendingMachine.Blank);
 
-                Console.WriteLine("Please enter a slot ID");
-                string answer = Console.ReadLine().ToUpper();
+                
                 foreach (Item item in VendingMachine.ItemCollection)
                 {
                     if (item.Remaining == 0)
@@ -126,9 +142,22 @@ namespace Capstone.Classes
                     }
                 }
                 Console.WriteLine();
-                Console.WriteLine($"Your balance: ${VendingMachine.CurrentCash}");
-                VendingMachine.SpendCash(answer);
-                PurchaseMenu();
+                Console.WriteLine($"Your balance: ${VendingMachine.CurrentCash}\n");
+                Console.WriteLine("Please enter a slot ID");
+                string answer = Console.ReadLine().ToUpper();
+                if (!String.IsNullOrEmpty(answer))
+                {
+                    Console.WriteLine($"Your balance: ${VendingMachine.CurrentCash}");
+                    VendingMachine.SpendCash(answer);
+                    PurchaseMenu();
+                }
+                else if (String.IsNullOrEmpty(answer))
+                {
+                    Console.WriteLine(VendingMachine.Blank);
+                    Console.WriteLine("Invalid Selection\n");
+                    PurchaseMenu();
+                }
+
 
             }
             else if (purchaseOption == 3)
